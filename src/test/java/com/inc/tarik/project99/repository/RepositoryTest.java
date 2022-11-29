@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RepositoryTest {
 
-    private File TEST_FILE_XLS = new File("test_db.xls");
+    private final File TEST_FILE_XLS = new File("test_db.xls");
 
-    private File TEST_FILE_CSV = new File("test_db.csv");
+    private final File TEST_FILE_CSV = new File("test_db.csv");
 
     private Repository repository;
 
@@ -32,8 +32,8 @@ class RepositoryTest {
         repository = new Repository(database, config.getCsvMapper(), config.getCsvSchema());
         data = List.of(
                 new RowDTO(1, "1", Faculty.FL,
-                "1", "1", "1",
-                Year.of(2022), Year.of(2022)),
+                        "1", "1", "1",
+                        Year.of(2022), Year.of(2022)),
                 new RowDTO(2, "2", Faculty.FL,
                         "2", "2", "2",
                         Year.of(2022), Year.of(2022))

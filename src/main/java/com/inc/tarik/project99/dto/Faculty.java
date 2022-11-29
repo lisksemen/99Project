@@ -1,7 +1,5 @@
 package com.inc.tarik.project99.dto;
 
-import java.util.Arrays;
-
 public enum Faculty {
     IAT("ІАТ"),
     IATE("IATE"),
@@ -37,7 +35,6 @@ public enum Faculty {
     public String getName() {
         return this.name;
     }
-
 
 
 }
