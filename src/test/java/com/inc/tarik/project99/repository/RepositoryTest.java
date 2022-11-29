@@ -1,5 +1,6 @@
 package com.inc.tarik.project99.repository;
 
+import com.inc.tarik.project99.config.ApplicationConfig;
 import com.inc.tarik.project99.database.Database;
 import com.inc.tarik.project99.dto.Faculty;
 import com.inc.tarik.project99.dto.RowDTO;
@@ -14,7 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RepositoryTest {
 
-    private File TEST_FILE = new File("test_db.xls");
+    private File TEST_FILE_XLS = new File("test_db.xls");
+
+    private File TEST_FILE_CSV = new File("test_db.csv");
 
     private Repository repository;
 
@@ -25,7 +28,8 @@ class RepositoryTest {
     @BeforeEach
     void setUp() {
         database = new Database();
-        repository = new Repository(database);
+        ApplicationConfig config = new ApplicationConfig();
+        repository = new Repository(database, config.getCsvMapper(), config.getCsvSchema());
         data = List.of(
                 new RowDTO(1, "1", Faculty.FL,
                 "1", "1", "1",
@@ -40,13 +44,25 @@ class RepositoryTest {
 
     @Test
     void importFromXlsx() {
-        repository.exportToXLS(TEST_FILE);
-        repository.importFromXLS(TEST_FILE);
+        repository.exportToXLS(TEST_FILE_XLS);
+        repository.importFromXLS(TEST_FILE_XLS);
         assertEquals(data, database.stream().toList());
     }
 
     @Test
     void exportToXlsx() {
-        repository.exportToXLS(TEST_FILE);
+        repository.exportToXLS(TEST_FILE_XLS);
+    }
+
+    @Test
+    void exportToCSV() {
+        repository.exportToCSV(TEST_FILE_CSV);
+    }
+
+    @Test
+    void importFromCSV() {
+        repository.exportToCSV(TEST_FILE_CSV);
+        repository.importFromCSV(TEST_FILE_CSV);
+        assertEquals(data, database.stream().toList());
     }
 }

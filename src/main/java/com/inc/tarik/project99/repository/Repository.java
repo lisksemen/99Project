@@ -1,5 +1,10 @@
 package com.inc.tarik.project99.repository;
 
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SequenceWriter;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.inc.tarik.project99.database.Database;
 import com.inc.tarik.project99.dto.Faculty;
 import com.inc.tarik.project99.dto.RowDTO;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +33,10 @@ public class Repository {
 
     private Database database;
 
+    private CsvMapper mapper;
+
+    private CsvSchema schema;
+
 
     public void load() {
         importFromXLS(DATABASE_FILE);
@@ -34,6 +44,29 @@ public class Repository {
 
     public void save() {
         exportToXLS(DATABASE_FILE);
+    }
+
+    public void exportToCSV(File file) {
+        try (SequenceWriter writer = mapper.writer(schema).writeValues(file)) {
+            database.forEach(value -> {
+                try {
+                    writer.write(value);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void importFromCSV(File file) {
+        try (MappingIterator<RowDTO> iterator = mapper.readerFor(RowDTO.class).with(schema).readValues(file)) {
+            database.importAll(iterator.readAll());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void importFromXLS(File file) {
