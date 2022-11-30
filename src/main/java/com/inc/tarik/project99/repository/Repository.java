@@ -6,7 +6,9 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.inc.tarik.project99.database.Database;
 import com.inc.tarik.project99.dto.Faculty;
+import com.inc.tarik.project99.dto.KPIAward;
 import com.inc.tarik.project99.dto.RowDTO;
+import com.inc.tarik.project99.dto.StateAward;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -138,14 +140,24 @@ public class Repository {
         }
     }
 
-    // TODO
     private String checkIfStateDiplomaIsCorrect(String stateDiploma) {
-        return stateDiploma;
+        for (var name:
+             StateAward.values()) {
+            if (name.getName().equals(stateDiploma)) {
+                return stateDiploma;
+            }
+        }
+        throw new RuntimeException("State award was not found");
     }
 
-    // TODO
     private String checkIfKpiDiplomaIsCorrect(String kpiDiploma) {
-        return kpiDiploma;
+        for (var name:
+                KPIAward.values()) {
+            if (name.getName().equals(kpiDiploma)) {
+                return kpiDiploma;
+            }
+        }
+        throw new RuntimeException("KPI award was not found");
     }
 
 
