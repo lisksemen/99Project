@@ -141,8 +141,8 @@ public class Repository {
     }
 
     private String checkIfStateDiplomaIsCorrect(String stateDiploma) {
-        for (var name:
-             StateAward.values()) {
+        for (var name :
+                StateAward.values()) {
             if (name.getName().equals(stateDiploma)) {
                 return stateDiploma;
             }
@@ -151,7 +151,7 @@ public class Repository {
     }
 
     private String checkIfKpiDiplomaIsCorrect(String kpiDiploma) {
-        for (var name:
+        for (var name :
                 KPIAward.values()) {
             if (name.getName().equals(kpiDiploma)) {
                 return kpiDiploma;
